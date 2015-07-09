@@ -9,10 +9,10 @@ Imports System.Runtime.InteropServices
 ' Revisar los valores de los atributos del ensamblado
 
 <Assembly: AssemblyTitle("MSXEBridge")> 
-<Assembly: AssemblyDescription("")> 
-<Assembly: AssemblyCompany("Microsoft")> 
+<Assembly: AssemblyDescription("Libreria que comunica el archivo MSXE.ocx con C++")> 
+<Assembly: AssemblyCompany("")> 
 <Assembly: AssemblyProduct("MSXEBridge")> 
-<Assembly: AssemblyCopyright("Copyright © Microsoft 2015")> 
+<Assembly: AssemblyCopyright("")> 
 <Assembly: AssemblyTrademark("")> 
 
 <Assembly: ComVisible(True)> 
