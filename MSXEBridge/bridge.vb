@@ -10,7 +10,7 @@ Namespace Bridge
         <DispId(4)> Function cerrarPuerto() As Boolean
         <DispId(5)> Function leerBlanco() As Boolean
         <DispId(6)> Function leerNegro() As Boolean
-        <DispId(7)> Function medirMuestra() As Array
+        <DispId(7)> Function medirMuestra()
     End Interface
 
     'esta Guid es la que toma en cuenta Qt al momento de establecer el control del QAxObject
@@ -104,27 +104,21 @@ Namespace Bridge
             Return leido
         End Function
 
-        Public Function medirMuestra() As Array Implements _Bridge.medirMuestra
+        Public Function medirMuestra() Implements _Bridge.medirMuestra
             Dim resultado(PUNTOS_ESPECTRALES) As Single
-            Dim flag As Boolean = True
             Try
                 sensor.ReadSample(resultado)
-            Catch ex As Exception
-                flag = False
-            End Try
 
-            If (flag) Then
                 'el array resultante tiene 32 elementos, puesto que va desde cero (0) hasta 31
                 'el metodo ReadSample llena el array desde uno (1) hasta 31, asi que hay que omitir el elemento cero (0) del array
-                'probar estas dos formas de omitir el primer elemento, para ver cual funciona adecuadamente
+                For i = 1 To UBound(resultado)
+                    resultado(i - 1) = resultado(i)
+                Next i
 
-                'For i = 1 To UBound(resultado)
-                'resultado(i - 1) = resultado(i)
-                'Next i
-                'ReDim Preserve resultado(UBound(resultado) - 1)
-
-                resultado = resultado.Skip(0).ToArray
-            End If
+                ReDim Preserve resultado(UBound(resultado) - 1)
+            Catch ex As Exception
+                
+            End Try
 
             Return resultado
         End Function
