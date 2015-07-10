@@ -3,6 +3,8 @@ Imports System.Runtime.InteropServices
 
 Namespace Bridge
 
+    <Guid("638B460E-8E2B-45D4-AA77-194F06E3A2ED"), _
+    InterfaceType(ComInterfaceType.InterfaceIsIDispatch)> _
     Public Interface _Bridge
         <DispId(1)> Function prueba() As String
         <DispId(2)> Function Beep() As Boolean
@@ -49,8 +51,8 @@ Namespace Bridge
         Public Function abrirPuerto() As Boolean Implements _Bridge.abrirPuerto
 
             Dim i As Integer = 1
-            sensor.BaudRate = 9600
             Dim conectado As Boolean = False
+            sensor.BaudRate = 9600
             'prueba con cada uno de los puertos COM para conectar el miniscan
             While i < 5 And conectado = False
                 sensor.CommPort = i
@@ -106,25 +108,12 @@ Namespace Bridge
 
         Public Function medirMuestra() As Array Implements _Bridge.medirMuestra
             Dim resultado(PUNTOS_ESPECTRALES) As Single
-            Dim flag As Boolean = True
+
             Try
                 sensor.ReadSample(resultado)
             Catch ex As Exception
-                flag = False
+
             End Try
-
-            If (flag) Then
-                'el array resultante tiene 32 elementos, puesto que va desde cero (0) hasta 31
-                'el metodo ReadSample llena el array desde uno (1) hasta 31, asi que hay que omitir el elemento cero (0) del array
-                'probar estas dos formas de omitir el primer elemento, para ver cual funciona adecuadamente
-
-                'For i = 1 To UBound(resultado)
-                'resultado(i - 1) = resultado(i)
-                'Next i
-                'ReDim Preserve resultado(UBound(resultado) - 1)
-
-                resultado = resultado.Skip(0).ToArray
-            End If
 
             Return resultado
         End Function
