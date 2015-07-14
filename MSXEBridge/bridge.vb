@@ -4,13 +4,12 @@ Imports System.Runtime.InteropServices
 Namespace Bridge
 
     Public Interface _Bridge
-        <DispId(1)> Function prueba() As String
-        <DispId(2)> Function Beep() As Boolean
-        <DispId(3)> Function abrirPuerto() As Boolean
-        <DispId(4)> Function cerrarPuerto() As Boolean
-        <DispId(5)> Function leerBlanco() As Boolean
-        <DispId(6)> Function leerNegro() As Boolean
-        <DispId(7)> Function medirMuestra()
+        <DispId(1)> Function Beep() As Boolean
+        <DispId(2)> Function abrirPuerto() As Boolean
+        <DispId(3)> Function cerrarPuerto() As Boolean
+        <DispId(4)> Function leerBlanco() As Boolean
+        <DispId(5)> Function leerNegro() As Boolean
+        <DispId(6)> Function medirMuestra()
     End Interface
 
     'esta Guid es la que toma en cuenta Qt al momento de establecer el control del QAxObject
@@ -24,14 +23,15 @@ Namespace Bridge
         Public Bridge()
 
         Dim sensor As MiniScanXE.MSXE
+        Dim log As MiniScanXE.MSLog
+        Dim setup As MiniScanXE.MSSetup
+
         Const PUNTOS_ESPECTRALES As Integer = 31
         Public Sub New()
             sensor = New MiniScanXE.MSXE
+            log = New MiniScanXE.MSLog
+            setup = New MiniScanXE.MSSetup
         End Sub
-        Public Function prueba() As String Implements _Bridge.prueba
-
-            Return "Esta es una prueba de comunicacion."
-        End Function
 
         Public Function Beep() As Boolean Implements _Bridge.Beep
 
