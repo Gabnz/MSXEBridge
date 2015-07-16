@@ -1,7 +1,7 @@
 ﻿Imports System
 Imports System.Runtime.InteropServices
 
-Namespace Bridge
+Namespace MSXE
 
     Public Interface _Bridge
         <DispId(1)> Function Beep() As Boolean
@@ -23,14 +23,9 @@ Namespace Bridge
         Public Bridge()
 
         Dim sensor As MiniScanXE.MSXE
-        Dim log As MiniScanXE.MSLog
-        Dim setup As MiniScanXE.MSSetup
-
         Const PUNTOS_ESPECTRALES As Integer = 31
         Public Sub New()
             sensor = New MiniScanXE.MSXE
-            log = New MiniScanXE.MSLog
-            setup = New MiniScanXE.MSSetup
         End Sub
 
         Public Function Beep() As Boolean Implements _Bridge.Beep
@@ -117,7 +112,7 @@ Namespace Bridge
 
                 ReDim Preserve resultado(UBound(resultado) - 1)
             Catch ex As Exception
-                
+
             End Try
 
             Return resultado
