@@ -5,11 +5,12 @@ Namespace MSXE
 
     Public Interface _Bridge
         <DispId(1)> Function Beep() As Boolean
-        <DispId(2)> Function abrirPuerto() As Boolean
-        <DispId(3)> Function cerrarPuerto() As Boolean
-        <DispId(4)> Function leerBlanco() As Boolean
-        <DispId(5)> Function leerNegro() As Boolean
-        <DispId(6)> Function medirMuestra()
+        <DispId(2)> Function BeepDoble() As Boolean
+        <DispId(3)> Function abrirPuerto(ByVal puerto As Integer) As Boolean
+        <DispId(4)> Function cerrarPuerto() As Boolean
+        <DispId(5)> Function leerBlanco() As Boolean
+        <DispId(6)> Function leerNegro() As Boolean
+        <DispId(7)> Function medirMuestra()
     End Interface
 
     'esta Guid es la que toma en cuenta Qt al momento de establecer el control del QAxObject
@@ -29,7 +30,6 @@ Namespace MSXE
         End Sub
 
         Public Function Beep() As Boolean Implements _Bridge.Beep
-
             Dim respuesta As Boolean = True
 
             Try
@@ -41,27 +41,34 @@ Namespace MSXE
             Return respuesta
         End Function
 
-        Public Function abrirPuerto() As Boolean Implements _Bridge.abrirPuerto
+        Public Function BeepDoble() As Boolean Implements _Bridge.BeepDoble
+            Dim respuesta As Boolean = True
 
-            Dim i As Integer = 1
+            Try
+                sensor.DblBeep()
+            Catch ex As Exception
+                respuesta = False
+            End Try
+
+            Return respuesta
+        End Function
+        Public Function abrirPuerto(ByVal puerto As Integer) As Boolean Implements _Bridge.abrirPuerto
             sensor.BaudRate = 9600
             Dim conectado As Boolean = False
             'prueba con cada uno de los puertos COM para conectar el miniscan
-            While i < 5 And conectado = False
-                sensor.CommPort = i
+            sensor.CommPort = puerto
                 Try
-                    sensor.OpenCommPort()
+                sensor.OpenCommPort()
+                sensor.Autostore = True
                     conectado = True
                 Catch ex As Exception
-                    i += 1
+
                 End Try
-            End While
 
             Return conectado
         End Function
 
         Public Function cerrarPuerto() As Boolean Implements _Bridge.cerrarPuerto
-
             Dim desconectado As Boolean = True
 
             Try
@@ -74,7 +81,6 @@ Namespace MSXE
         End Function
 
         Public Function leerBlanco() As Boolean Implements _Bridge.leerBlanco
-
             Dim leido As Boolean = True
 
             Try
@@ -87,7 +93,6 @@ Namespace MSXE
         End Function
 
         Public Function leerNegro() As Boolean Implements _Bridge.leerNegro
-
             Dim leido As Boolean = True
 
             Try
